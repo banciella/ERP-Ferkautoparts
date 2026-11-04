@@ -1,1 +1,95 @@
-<!doctype html><meta charset="utf-8"><title>ERP Ferkautoparts</title><h1>ERP Ferkautoparts - API no ar</h1><p><a href="/swagger">Abrir Swagger</a></p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login · ERP Ferkautoparts</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="pagina-login">
+  <noscript><p class="msg msg-erro">Este sistema precisa de JavaScript ativado para funcionar.</p></noscript>
+
+  <div class="login-area">
+    <main id="conteudo" class="login-card">
+      <h1>ERP Ferkautoparts</h1>
+      <p class="subtitulo">Controle de estoque de autopeças · PIM IV</p>
+
+      <form id="form-login" novalidate>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="username" required>
+        </div>
+
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <div class="campo-senha">
+            <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+            <button type="button" id="ver-senha" aria-pressed="false" aria-label="Mostrar senha">Mostrar</button>
+          </div>
+        </div>
+
+        <div id="erro" class="msg msg-erro" role="alert" hidden></div>
+
+        <button type="submit" class="btn" id="btn-entrar">Entrar</button>
+      </form>
+    </main>
+  </div>
+
+  <footer class="rodape">ERP Ferkautoparts · PIM IV · 2026</footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      // Se já está logado, vai direto para o dashboard
+      if (ERP.getToken() && ERP.getUsuario()) { window.location.href = 'dashboard.html'; return; }
+
+      ERP.montarPagina({ publica: true });
+
+      const form = document.getElementById('form-login');
+      const erro = document.getElementById('erro');
+      const botao = document.getElementById('btn-entrar');
+      const campoSenha = document.getElementById('senha');
+      const verSenha = document.getElementById('ver-senha');
+
+      function mostrarErro(texto) {
+        erro.textContent = texto;
+        erro.hidden = false;
+      }
+
+      verSenha.addEventListener('click', function () {
+        const escondida = campoSenha.type === 'password';
+        campoSenha.type = escondida ? 'text' : 'password';
+        verSenha.textContent = escondida ? 'Ocultar' : 'Mostrar';
+        verSenha.setAttribute('aria-pressed', escondida ? 'true' : 'false');
+        verSenha.setAttribute('aria-label', escondida ? 'Ocultar senha' : 'Mostrar senha');
+      });
+
+      form.addEventListener('submit', async function (ev) {
+        ev.preventDefault();
+        erro.hidden = true;
+
+        const email = document.getElementById('email').value.trim();
+        const senha = campoSenha.value;
+        if (!email || !senha) { mostrarErro('Informe o e-mail e a senha.'); return; }
+
+        botao.disabled = true;
+        botao.textContent = 'Entrando...';
+        try {
+          const r = await ERP.api('/api/auth/login', {
+            method: 'POST',
+            body: { email: email, senha: senha },
+            semRedirecionar: true
+          });
+          ERP.salvarSessao(r.token, r.usuario);
+          window.location.href = 'dashboard.html';
+        } catch (e) {
+          mostrarErro(e.message);
+          botao.disabled = false;
+          botao.textContent = 'Entrar';
+          campoSenha.focus();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

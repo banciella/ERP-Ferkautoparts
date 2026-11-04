@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · ERP Ferkautoparts</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <noscript><p class="msg msg-erro">Este sistema precisa de JavaScript ativado para funcionar.</p></noscript>
+
+  <main id="conteudo">
+    <div class="linha-titulo">
+      <div>
+        <h1>Dashboard</h1>
+        <p class="subtitulo" id="atualizado">Visão geral do estoque</p>
+      </div>
+      <button type="button" class="btn btn-claro" id="btn-atualizar">Atualizar dados</button>
+    </div>
+
+    <p id="status" class="msg msg-info" role="status" aria-live="polite">Carregando dados...</p>
+    <div id="erro" class="msg msg-erro" role="alert" hidden></div>
+
+    <div id="conteudo-dash" hidden>
+      <section class="cards" aria-label="Indicadores principais">
+        <div class="card-kpi">
+          <p class="rotulo">Produtos ativos</p>
+          <p class="valor" id="kpi-produtos">–</p>
+        </div>
+        <div class="card-kpi">
+          <p class="rotulo">Unidades em estoque</p>
+          <p class="valor" id="kpi-unidades">–</p>
+        </div>
+        <div class="card-kpi verde">
+          <p class="rotulo">Valor em estoque (custo)</p>
+          <p class="valor" id="kpi-valor">–</p>
+        </div>
+        <div class="card-kpi alerta">
+          <p class="rotulo">Produtos críticos</p>
+          <p class="valor" id="kpi-criticos">–</p>
+        </div>
+      </section>
+
+      <section class="painel" aria-labelledby="t-criticos">
+        <h2 id="t-criticos">Produtos que precisam de atenção</h2>
+        <p class="subtitulo">Estoque crítico (menos de 10 unidades) ou abaixo do mínimo cadastrado.</p>
+        <div id="lista-criticos"></div>
+      </section>
+
+      <div class="grade-2">
+        <section class="painel" aria-labelledby="t-cat">
+          <h2 id="t-cat">Unidades por categoria</h2>
+          <ul class="barras-h" id="grafico-categorias"></ul>
+        </section>
+
+        <section class="painel" aria-labelledby="t-mov">
+          <h2 id="t-mov">Movimentações dos últimos 7 dias</h2>
+          <div class="legenda" aria-hidden="true">
+            <span><i class="i-entrada"></i>Entradas</span>
+            <span><i class="i-saida"></i>Saídas</span>
+          </div>
+          <div class="colunas" id="grafico-movimentos" aria-hidden="true"></div>
+          <div class="rotulos-dia" id="rotulos-movimentos" aria-hidden="true"></div>
+
+          <!-- Alternativa em tabela para leitores de tela -->
+          <table class="so-leitor">
+            <caption>Entradas e saídas por dia, últimos 7 dias</caption>
+            <thead><tr><th>Dia</th><th>Entradas</th><th>Saídas</th></tr></thead>
+            <tbody id="tabela-movimentos"></tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="rodape">ERP Ferkautoparts · PIM IV · 2026</footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
