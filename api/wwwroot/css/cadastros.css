@@ -1,0 +1,85 @@
+/* =====================================================================
+   ERP Ferkautoparts - PIM IV  |  Estilos das telas de cadastro
+   (Produtos e Movimentações). Usado junto com estilo.css
+   ===================================================================== */
+
+/* ---------- campos extras ---------- */
+.campo select, .campo textarea {
+  width: 100%; padding: .7rem .8rem; font-size: 1rem; font-family: inherit;
+  border: 2px solid #aab8c6; border-radius: 8px; background: #fff; color: #000;
+}
+.campo textarea { resize: vertical; min-height: 4.5rem; }
+.campo select:focus, .campo textarea:focus { border-color: var(--azul); outline: 3px solid var(--foco); outline-offset: 1px; }
+.campo input:disabled { background: #eef2f6; color: #52606d; cursor: not-allowed; }
+.campo .dica { margin: .25rem 0 0; font-size: .82rem; color: var(--texto-suave); }
+
+/* ---------- filtros ---------- */
+.filtros { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .9rem; align-items: end; }
+.filtros .campo { margin-bottom: 0; }
+.resumo-lista { margin: .9rem 0 .4rem; color: var(--texto-suave); font-size: .92rem; }
+
+/* ---------- botões ---------- */
+.btn-peq { padding: .3rem .75rem; min-height: 34px; font-size: .85rem; border-radius: 6px; }
+.btn-perigo { background: var(--critico); color: #fff; }
+.btn-perigo:hover { background: #962d22; }
+.acoes { display: flex; flex-wrap: wrap; gap: .4rem; }
+a.btn { display: inline-flex; align-items: center; text-decoration: none; }
+
+/* ---------- selos extras ---------- */
+.selo.ATIVO    { color: var(--normal); background: #e6f6ec; }
+.selo.INATIVO  { color: #5d6d7e; background: #eef1f4; }
+.selo.OBSOLETO { color: var(--baixo); background: #fef5e0; }
+.selo.ENTRADA  { color: var(--verde-escuro); background: #e6f6ec; }
+.selo.SAIDA    { color: #a04000; background: #fdf0e3; }
+
+.msg-ok { background: #e6f6ec; color: #145a32; border: 1px solid #9bd5b2; }
+
+/* ---------- janela (dialog) ---------- */
+dialog {
+  border: 0; border-radius: 14px; padding: 0; width: min(680px, 94vw); max-height: 92vh;
+  box-shadow: 0 16px 50px rgba(0,0,0,.4); color: var(--texto);
+}
+dialog::backdrop { background: rgba(0, 0, 0, .55); }
+.dlg-cab { padding: 1.1rem 1.5rem .3rem; }
+.dlg-cab h2 { margin: 0; color: var(--azul); font-size: 1.3rem; }
+.dlg-corpo { padding: .6rem 1.5rem 1rem; overflow-y: auto; max-height: 68vh; }
+.dlg-rodape { display: flex; justify-content: flex-end; gap: .6rem; flex-wrap: wrap; padding: 1rem 1.5rem; border-top: 1px solid var(--borda); background: #f6f9fc; border-radius: 0 0 14px 14px; }
+.form-grade { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 1rem; }
+.form-grade .largo { grid-column: 1 / -1; }
+.obrigatorio { color: var(--critico); font-weight: 700; }
+
+/* ---------- registrar movimentação ---------- */
+.tipo-opcoes { display: flex; gap: .75rem; flex-wrap: wrap; }
+.tipo-opcoes label {
+  display: flex; align-items: center; gap: .5rem; cursor: pointer; margin: 0;
+  border: 2px solid #aab8c6; border-radius: 8px; padding: .6rem 1.1rem; background: #fff; color: var(--azul); font-weight: 600;
+}
+.tipo-opcoes input { width: 1.1rem; height: 1.1rem; margin: 0; accent-color: var(--azul); }
+.tipo-opcoes label:has(input:checked) { border-color: var(--azul); background: #e8f1fb; }
+.tipo-opcoes label:has(input:focus-visible) { outline: 3px solid var(--foco); outline-offset: 2px; }
+.info-produto { background: #eaf0f7; border-radius: 8px; padding: .7rem .9rem; margin: 0 0 1rem; font-size: .95rem; }
+.form-mov { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 1.25rem; }
+.form-mov .largo { grid-column: 1 / -1; }
+
+/* ---------- ALTO CONTRASTE ---------- */
+body.alto-contraste dialog { background: #000; color: #fff; border: 2px solid #fff; }
+body.alto-contraste dialog::backdrop { background: rgba(0, 0, 0, .85); }
+body.alto-contraste .dlg-cab h2 { color: #ffff00; }
+body.alto-contraste .dlg-rodape { background: #000; border-top-color: #fff; }
+body.alto-contraste .campo select, body.alto-contraste .campo textarea { background: #000; color: #fff; border-color: #fff; }
+body.alto-contraste .campo input:disabled { background: #222; color: #bbb; }
+body.alto-contraste .campo .dica, body.alto-contraste .resumo-lista { color: #fff; }
+body.alto-contraste .btn-perigo { background: #ff6b6b; color: #000; border: 2px solid #fff; }
+body.alto-contraste .selo.ATIVO, body.alto-contraste .selo.ENTRADA { background: #000; color: #7dff9b; }
+body.alto-contraste .selo.INATIVO { background: #000; color: #ccc; }
+body.alto-contraste .selo.OBSOLETO { background: #000; color: #ffd24d; }
+body.alto-contraste .selo.SAIDA { background: #000; color: #ffb066; }
+body.alto-contraste .msg-ok { background: #000; color: #7dff9b; border-color: #7dff9b; }
+body.alto-contraste .info-produto { background: #000; border: 2px solid #fff; }
+body.alto-contraste .tipo-opcoes label { background: #000; color: #fff; border-color: #fff; }
+body.alto-contraste .tipo-opcoes label:has(input:checked) { background: #ffff00; color: #000; }
+body.alto-contraste .obrigatorio { color: #ff6b6b; }
+
+@media (max-width: 640px) {
+  .form-grade { grid-template-columns: 1fr; }
+}
