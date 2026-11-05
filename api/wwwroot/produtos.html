@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produtos · ERP Ferkautoparts</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/cadastros.css">
+</head>
+<body>
+  <noscript><p class="msg msg-erro">Este sistema precisa de JavaScript ativado para funcionar.</p></noscript>
+
+  <main id="conteudo">
+    <div class="linha-titulo">
+      <div>
+        <h1>Produtos</h1>
+        <p class="subtitulo" id="sub-pagina">Catálogo de peças e situação do estoque</p>
+      </div>
+      <button type="button" class="btn btn-verde" id="btn-novo" hidden>+ Novo produto</button>
+    </div>
+
+    <div id="aviso-ok" class="msg msg-ok" role="status" aria-live="polite" hidden></div>
+    <div id="aviso-erro" class="msg msg-erro" role="alert" hidden></div>
+
+    <section class="painel" aria-labelledby="t-filtros">
+      <h2 id="t-filtros" class="so-leitor">Filtros</h2>
+      <form id="form-filtros" class="filtros" novalidate>
+        <div class="campo">
+          <label for="f-busca">Nome ou código</label>
+          <input id="f-busca" type="search" autocomplete="off" placeholder="Ex.: filtro, 100004">
+        </div>
+        <div class="campo">
+          <label for="f-categoria">Categoria</label>
+          <select id="f-categoria"><option value="">Todas</option></select>
+        </div>
+        <div class="campo">
+          <label for="f-situacao">Situação do estoque</label>
+          <select id="f-situacao">
+            <option value="">Todas</option>
+            <option value="CRITICO">Crítico (menos de 10)</option>
+            <option value="BAIXO">Baixo (10 a 29)</option>
+            <option value="NORMAL">Normal (30 ou mais)</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="f-status">Status do produto</label>
+          <select id="f-status">
+            <option value="">Todos</option>
+            <option value="ATIVO">Ativo</option>
+            <option value="INATIVO">Inativo</option>
+            <option value="OBSOLETO">Obsoleto</option>
+          </select>
+        </div>
+        <div class="campo">
+          <button type="button" class="btn btn-claro" id="btn-limpar">Limpar filtros</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="painel" aria-labelledby="t-lista">
+      <h2 id="t-lista" class="so-leitor">Lista de produtos</h2>
+      <p id="resumo" class="resumo-lista" role="status" aria-live="polite">Carregando...</p>
+      <div class="tabela-wrap" id="tabela-area"></div>
+    </section>
+  </main>
+
+  <!-- Janela: cadastrar / editar -->
+  <dialog id="dlg-produto" aria-labelledby="dlg-titulo">
+    <form id="form-produto" novalidate>
+      <div class="dlg-cab"><h2 id="dlg-titulo">Novo produto</h2></div>
+      <div class="dlg-corpo">
+        <div id="dlg-erro" class="msg msg-erro" role="alert" hidden></div>
+        <div class="form-grade">
+          <div class="campo">
+            <label for="p-codigo">Código (SKU) <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="p-codigo" maxlength="30" required>
+          </div>
+          <div class="campo">
+            <label for="p-status">Status</label>
+            <select id="p-status">
+              <option value="ATIVO">Ativo</option>
+              <option value="INATIVO">Inativo</option>
+              <option value="OBSOLETO">Obsoleto</option>
+            </select>
+          </div>
+          <div class="campo largo">
+            <label for="p-nome">Nome <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="p-nome" maxlength="150" required>
+          </div>
+          <div class="campo">
+            <label for="p-categoria">Categoria <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <select id="p-categoria" required></select>
+          </div>
+          <div class="campo">
+            <label for="p-fornecedor">Fornecedor</label>
+            <select id="p-fornecedor"></select>
+          </div>
+          <div class="campo">
+            <label for="p-compra">Preço de compra (R$)</label>
+            <input id="p-compra" type="number" min="0" step="0.01" inputmode="decimal" value="0">
+          </div>
+          <div class="campo">
+            <label for="p-venda">Preço de venda (R$)</label>
+            <input id="p-venda" type="number" min="0" step="0.01" inputmode="decimal" value="0">
+          </div>
+          <div class="campo">
+            <label for="p-estoque">Estoque atual</label>
+            <input id="p-estoque" type="number" min="0" step="1" inputmode="numeric" value="0">
+            <p class="dica" id="dica-estoque">Estoque inicial do produto.</p>
+          </div>
+          <div class="campo">
+            <label for="p-minimo">Estoque mínimo</label>
+            <input id="p-minimo" type="number" min="0" step="1" inputmode="numeric" value="0">
+          </div>
+          <div class="campo largo">
+            <label for="p-descricao">Descrição</label>
+            <textarea id="p-descricao" maxlength="300"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="dlg-rodape">
+        <button type="button" class="btn btn-claro" id="btn-cancelar">Cancelar</button>
+        <button type="submit" class="btn" id="btn-salvar">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Janela: confirmar exclusão -->
+  <dialog id="dlg-excluir" aria-labelledby="dlg-excluir-titulo">
+    <div class="dlg-cab"><h2 id="dlg-excluir-titulo">Excluir produto?</h2></div>
+    <div class="dlg-corpo">
+      <p id="excluir-texto"></p>
+      <p class="dica">Se o produto já tem movimentações, ele não pode ser excluído. Nesse caso, mude o status para <strong>Inativo</strong>.</p>
+    </div>
+    <div class="dlg-rodape">
+      <button type="button" class="btn btn-claro" id="btn-excluir-nao">Cancelar</button>
+      <button type="button" class="btn btn-perigo" id="btn-excluir-sim">Excluir</button>
+    </div>
+  </dialog>
+
+  <footer class="rodape">ERP Ferkautoparts · PIM IV · 2026</footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/produtos.js"></script>
+</body>
+</html>
