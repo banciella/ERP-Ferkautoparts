@@ -14,8 +14,8 @@
   // Telas do sistema. "pronto: false" aparece no menu como "em breve".
   const PAGINAS = [
     { id: 'dashboard',     nome: 'Dashboard',     url: 'dashboard.html',     pronto: true },
-    { id: 'produtos',      nome: 'Produtos',      url: 'produtos.html',      pronto: false },
-    { id: 'movimentacoes', nome: 'Movimentações', url: 'movimentacoes.html', pronto: false },
+    { id: 'produtos',      nome: 'Produtos',      url: 'produtos.html',      pronto: true },
+    { id: 'movimentacoes', nome: 'Movimentações', url: 'movimentacoes.html', pronto: true },
     { id: 'estoque',       nome: 'Estoque',       url: 'estoque.html',       pronto: false },
     { id: 'admin',         nome: 'Admin',         url: 'admin.html',         pronto: false, soAdmin: true }
   ];
@@ -27,6 +27,10 @@
   }
   const moeda = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(v) || 0);
   const inteiro = v => new Intl.NumberFormat('pt-BR').format(Number(v) || 0);
+  const dataHora = iso => {
+    const d = new Date(iso);
+    return isNaN(d) ? '' : d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+  };
 
   // ------------------------------------------------------------ sessão
   const getToken = () => sessionStorage.getItem(CHAVE_TOKEN);
@@ -189,5 +193,5 @@
     return usuario;
   }
 
-  window.ERP = { esc, moeda, inteiro, api, getToken, getUsuario, salvarSessao, sair, montarPagina };
+  window.ERP = { esc, moeda, inteiro, dataHora, api, getToken, getUsuario, salvarSessao, sair, montarPagina };
 })();
