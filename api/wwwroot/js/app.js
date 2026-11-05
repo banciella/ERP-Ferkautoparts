@@ -16,8 +16,8 @@
     { id: 'dashboard',     nome: 'Dashboard',     url: 'dashboard.html',     pronto: true },
     { id: 'produtos',      nome: 'Produtos',      url: 'produtos.html',      pronto: true },
     { id: 'movimentacoes', nome: 'Movimentações', url: 'movimentacoes.html', pronto: true },
-    { id: 'estoque',       nome: 'Estoque',       url: 'estoque.html',       pronto: false },
-    { id: 'admin',         nome: 'Admin',         url: 'admin.html',         pronto: false, soAdmin: true }
+    { id: 'estoque',       nome: 'Estoque',       url: 'estoque.html',       pronto: true },
+    { id: 'admin',         nome: 'Admin',         url: 'admin.html',         pronto: true, soAdmin: true }
   ];
 
   // ------------------------------------------------------------ utilidades

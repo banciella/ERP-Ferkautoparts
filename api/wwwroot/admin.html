@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administração · ERP Ferkautoparts</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/cadastros.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <noscript><p class="msg msg-erro">Este sistema precisa de JavaScript ativado para funcionar.</p></noscript>
+
+  <main id="conteudo">
+    <h1>Administração</h1>
+    <p class="subtitulo">Usuários, categorias, fornecedores e registro de auditoria. Área restrita ao perfil ADMIN.</p>
+
+    <div id="aviso-ok" class="msg msg-ok" role="status" aria-live="polite" hidden></div>
+    <div id="aviso-erro" class="msg msg-erro" role="alert" hidden></div>
+
+    <div class="abas" role="tablist" aria-label="Seções da administração">
+      <button type="button" class="aba" role="tab" id="aba-usuarios" aria-controls="painel-usuarios" aria-selected="true">Usuários</button>
+      <button type="button" class="aba" role="tab" id="aba-categorias" aria-controls="painel-categorias" aria-selected="false" tabindex="-1">Categorias</button>
+      <button type="button" class="aba" role="tab" id="aba-fornecedores" aria-controls="painel-fornecedores" aria-selected="false" tabindex="-1">Fornecedores</button>
+      <button type="button" class="aba" role="tab" id="aba-auditoria" aria-controls="painel-auditoria" aria-selected="false" tabindex="-1">Auditoria</button>
+    </div>
+
+    <!-- ===== USUÁRIOS ===== -->
+    <section class="painel painel-aba" id="painel-usuarios" role="tabpanel" aria-labelledby="aba-usuarios">
+      <div class="barra-acoes">
+        <p class="resumo-lista" id="resumo-usuarios" role="status" aria-live="polite">Carregando...</p>
+        <button type="button" class="btn btn-verde" id="novo-usuarios">+ Novo usuário</button>
+      </div>
+      <div class="tabela-wrap" id="area-usuarios"></div>
+    </section>
+
+    <!-- ===== CATEGORIAS ===== -->
+    <section class="painel painel-aba" id="painel-categorias" role="tabpanel" aria-labelledby="aba-categorias" hidden>
+      <div class="barra-acoes">
+        <p class="resumo-lista" id="resumo-categorias" role="status" aria-live="polite"></p>
+        <button type="button" class="btn btn-verde" id="novo-categorias">+ Nova categoria</button>
+      </div>
+      <div class="tabela-wrap" id="area-categorias"></div>
+    </section>
+
+    <!-- ===== FORNECEDORES ===== -->
+    <section class="painel painel-aba" id="painel-fornecedores" role="tabpanel" aria-labelledby="aba-fornecedores" hidden>
+      <div class="barra-acoes">
+        <p class="resumo-lista" id="resumo-fornecedores" role="status" aria-live="polite"></p>
+        <button type="button" class="btn btn-verde" id="novo-fornecedores">+ Novo fornecedor</button>
+      </div>
+      <div class="tabela-wrap" id="area-fornecedores"></div>
+    </section>
+
+    <!-- ===== AUDITORIA ===== -->
+    <section class="painel painel-aba" id="painel-auditoria" role="tabpanel" aria-labelledby="aba-auditoria" hidden>
+      <p class="subtitulo">Registro automático (feito pelo banco de dados) de quem criou, alterou ou excluiu produtos, categorias, fornecedores e usuários.</p>
+      <form id="form-auditoria" class="filtros" novalidate>
+        <div class="campo">
+          <label for="a-tabela">Tabela</label>
+          <select id="a-tabela">
+            <option value="">Todas</option>
+            <option value="produtos">Produtos</option>
+            <option value="categorias">Categorias</option>
+            <option value="fornecedores">Fornecedores</option>
+            <option value="usuarios">Usuários</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="a-limite">Quantidade de registros</label>
+          <select id="a-limite">
+            <option value="50">Últimos 50</option>
+            <option value="100" selected>Últimos 100</option>
+            <option value="200">Últimos 200</option>
+            <option value="500">Últimos 500</option>
+          </select>
+        </div>
+        <div class="campo">
+          <button type="button" class="btn btn-claro" id="a-atualizar">Atualizar</button>
+        </div>
+      </form>
+      <p class="resumo-lista" id="resumo-auditoria" role="status" aria-live="polite"></p>
+      <div class="tabela-wrap" id="area-auditoria"></div>
+    </section>
+  </main>
+
+  <!-- ===== Janela: usuário ===== -->
+  <dialog id="dlg-usuarios" aria-labelledby="titulo-usuarios">
+    <form id="form-usuarios" novalidate>
+      <div class="dlg-cab"><h2 id="titulo-usuarios">Novo usuário</h2></div>
+      <div class="dlg-corpo">
+        <div id="erro-usuarios" class="msg msg-erro" role="alert" hidden></div>
+        <div class="form-grade">
+          <div class="campo largo">
+            <label for="u-nome">Nome <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="u-nome" maxlength="100" required>
+          </div>
+          <div class="campo largo">
+            <label for="u-email">E-mail <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="u-email" type="email" maxlength="150" autocomplete="off" required>
+            <p class="dica" id="dica-email" hidden>O e-mail não pode ser alterado.</p>
+          </div>
+          <div class="campo">
+            <label for="u-perfil">Perfil</label>
+            <select id="u-perfil">
+              <option value="OPERADOR">OPERADOR (consulta e movimenta)</option>
+              <option value="ADMIN">ADMIN (acesso total)</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="u-senha" id="rotulo-senha">Senha <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="u-senha" type="password" autocomplete="new-password" minlength="6">
+            <p class="dica" id="dica-senha">Mínimo de 6 caracteres.</p>
+          </div>
+          <div class="campo campo-check largo" id="campo-ativo" hidden>
+            <label for="u-ativo"><input id="u-ativo" type="checkbox" checked> Usuário ativo (pode entrar no sistema)</label>
+            <p class="dica" id="dica-proprio" hidden>Você não pode desativar nem rebaixar o seu próprio usuário.</p>
+          </div>
+        </div>
+      </div>
+      <div class="dlg-rodape">
+        <button type="button" class="btn btn-claro" data-fechar="dlg-usuarios">Cancelar</button>
+        <button type="submit" class="btn">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===== Janela: categoria ===== -->
+  <dialog id="dlg-categorias" aria-labelledby="titulo-categorias">
+    <form id="form-categorias" novalidate>
+      <div class="dlg-cab"><h2 id="titulo-categorias">Nova categoria</h2></div>
+      <div class="dlg-corpo">
+        <div id="erro-categorias" class="msg msg-erro" role="alert" hidden></div>
+        <div class="campo">
+          <label for="c-nome">Nome <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input id="c-nome" maxlength="60" required>
+        </div>
+        <div class="campo">
+          <label for="c-descricao">Descrição</label>
+          <input id="c-descricao" maxlength="200">
+        </div>
+      </div>
+      <div class="dlg-rodape">
+        <button type="button" class="btn btn-claro" data-fechar="dlg-categorias">Cancelar</button>
+        <button type="submit" class="btn">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===== Janela: fornecedor ===== -->
+  <dialog id="dlg-fornecedores" aria-labelledby="titulo-fornecedores">
+    <form id="form-fornecedores" novalidate>
+      <div class="dlg-cab"><h2 id="titulo-fornecedores">Novo fornecedor</h2></div>
+      <div class="dlg-corpo">
+        <div id="erro-fornecedores" class="msg msg-erro" role="alert" hidden></div>
+        <div class="form-grade">
+          <div class="campo largo">
+            <label for="f-nome">Nome <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="f-nome" maxlength="100" required>
+          </div>
+          <div class="campo">
+            <label for="f-cnpj">CNPJ</label>
+            <input id="f-cnpj" maxlength="18" inputmode="numeric" placeholder="00.000.000/0000-00">
+          </div>
+          <div class="campo">
+            <label for="f-telefone">Telefone</label>
+            <input id="f-telefone" maxlength="20" inputmode="tel">
+          </div>
+          <div class="campo largo">
+            <label for="f-email">E-mail</label>
+            <input id="f-email" type="email" maxlength="150">
+          </div>
+        </div>
+      </div>
+      <div class="dlg-rodape">
+        <button type="button" class="btn btn-claro" data-fechar="dlg-fornecedores">Cancelar</button>
+        <button type="submit" class="btn">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===== Janela: confirmar exclusão ===== -->
+  <dialog id="dlg-excluir" aria-labelledby="titulo-excluir">
+    <div class="dlg-cab"><h2 id="titulo-excluir">Confirmar exclusão</h2></div>
+    <div class="dlg-corpo">
+      <p id="texto-excluir"></p>
+      <p class="dica">Se o registro estiver ligado a produtos, o sistema não deixa excluir.</p>
+    </div>
+    <div class="dlg-rodape">
+      <button type="button" class="btn btn-claro" id="excluir-nao">Cancelar</button>
+      <button type="button" class="btn btn-perigo" id="excluir-sim">Excluir</button>
+    </div>
+  </dialog>
+
+  <footer class="rodape">ERP Ferkautoparts · PIM IV · 2026</footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

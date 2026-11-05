@@ -1,0 +1,50 @@
+/* =====================================================================
+   ERP Ferkautoparts - PIM IV  |  Estilos das telas Estoque e Admin (Bloco 3)
+   Usado junto com estilo.css e cadastros.css
+   ===================================================================== */
+
+/* ---------- abas (Admin) ---------- */
+.abas { display: flex; flex-wrap: wrap; gap: .25rem; border-bottom: 3px solid var(--azul); margin-bottom: 1.25rem; }
+.aba {
+  background: #e4ebf3; color: var(--azul); border: 1px solid var(--borda); border-bottom: 0;
+  border-radius: 8px 8px 0 0; padding: .6rem 1.2rem; font-size: 1rem; font-weight: 600;
+  cursor: pointer; min-height: 44px; font-family: inherit;
+}
+.aba:hover { background: #d3e0ee; }
+.aba[aria-selected="true"] { background: var(--azul); color: #fff; border-color: var(--azul); }
+.painel-aba[hidden] { display: none; }
+.barra-acoes { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .75rem; margin-bottom: .5rem; }
+.barra-acoes .resumo-lista { margin: 0; }
+
+/* ---------- caixa de marcar ---------- */
+.campo.campo-check label { display: flex; align-items: center; gap: .6rem; cursor: pointer; }
+.campo.campo-check input[type="checkbox"] { width: 1.25rem; height: 1.25rem; padding: 0; margin: 0; accent-color: var(--azul); }
+.campo.campo-check input[type="checkbox"]:disabled { cursor: not-allowed; }
+
+/* ---------- selos de auditoria ---------- */
+.selo.INSERT { color: var(--verde-escuro); background: #e6f6ec; }
+.selo.UPDATE { color: #0b5394; background: #e8f1fb; }
+.selo.DELETE { color: var(--critico); background: #fdecea; }
+.selo.SIM { color: var(--baixo); background: #fef5e0; }
+
+/* ---------- detalhes da auditoria ---------- */
+details.aud summary { cursor: pointer; color: var(--azul); font-weight: 600; }
+details.aud ul { margin: .5rem 0 .2rem; padding-left: 1.2rem; font-size: .9rem; }
+details.aud li { margin: .15rem 0; }
+details.aud code { background: #eef2f6; border-radius: 4px; padding: 0 .3rem; font-size: .85em; }
+
+/* ---------- totais ---------- */
+tfoot td { font-weight: 700; background: #eaf0f7; border-top: 2px solid var(--azul); }
+
+/* ---------- ALTO CONTRASTE ---------- */
+body.alto-contraste .aba { background: #000; color: #fff; border-color: #fff; }
+body.alto-contraste .aba:hover { background: #333; }
+body.alto-contraste .aba[aria-selected="true"] { background: #ffff00; color: #000; border-color: #ffff00; }
+body.alto-contraste .abas { border-bottom-color: #ffff00; }
+body.alto-contraste .selo.INSERT { background: #000; color: #7dff9b; }
+body.alto-contraste .selo.UPDATE { background: #000; color: #9fd4ff; }
+body.alto-contraste .selo.DELETE { background: #000; color: #ff6b6b; }
+body.alto-contraste .selo.SIM { background: #000; color: #ffd24d; }
+body.alto-contraste details.aud summary { color: #ffff00; }
+body.alto-contraste details.aud code { background: #222; color: #fff; }
+body.alto-contraste tfoot td { background: #222; color: #ffff00; border-top-color: #ffff00; }

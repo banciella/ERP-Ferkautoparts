@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estoque · ERP Ferkautoparts</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/cadastros.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <noscript><p class="msg msg-erro">Este sistema precisa de JavaScript ativado para funcionar.</p></noscript>
+
+  <main id="conteudo">
+    <div class="linha-titulo">
+      <div>
+        <h1>Estoque</h1>
+        <p class="subtitulo" id="atualizado">Situação das peças e sugestão de compra</p>
+      </div>
+      <button type="button" class="btn btn-claro" id="btn-atualizar">Atualizar dados</button>
+    </div>
+
+    <div id="aviso-erro" class="msg msg-erro" role="alert" hidden></div>
+
+    <section class="cards" aria-label="Resumo da situação do estoque">
+      <div class="card-kpi alerta">
+        <p class="rotulo">Crítico (menos de 10)</p>
+        <p class="valor" id="kpi-critico">–</p>
+      </div>
+      <div class="card-kpi">
+        <p class="rotulo">Baixo (10 a 29)</p>
+        <p class="valor" id="kpi-baixo">–</p>
+      </div>
+      <div class="card-kpi verde">
+        <p class="rotulo">Normal (30 ou mais)</p>
+        <p class="valor" id="kpi-normal">–</p>
+      </div>
+      <div class="card-kpi">
+        <p class="rotulo">Abaixo do mínimo cadastrado</p>
+        <p class="valor" id="kpi-minimo">–</p>
+      </div>
+    </section>
+
+    <!-- ===== Situação por produto ===== -->
+    <section class="painel" aria-labelledby="t-situacao">
+      <h2 id="t-situacao">Situação do estoque por produto</h2>
+      <form id="form-filtros" class="filtros" novalidate>
+        <div class="campo">
+          <label for="f-categoria">Categoria</label>
+          <select id="f-categoria"><option value="">Todas</option></select>
+        </div>
+        <div class="campo">
+          <label for="f-situacao">Situação</label>
+          <select id="f-situacao">
+            <option value="">Todas</option>
+            <option value="CRITICO">Crítico</option>
+            <option value="BAIXO">Baixo</option>
+            <option value="NORMAL">Normal</option>
+          </select>
+        </div>
+        <div class="campo campo-check">
+          <label for="f-minimo"><input id="f-minimo" type="checkbox"> Só abaixo do mínimo</label>
+        </div>
+        <div class="campo">
+          <button type="button" class="btn btn-claro" id="btn-limpar">Limpar filtros</button>
+        </div>
+      </form>
+      <p id="resumo" class="resumo-lista" role="status" aria-live="polite">Carregando...</p>
+      <div class="tabela-wrap" id="tabela-situacao"></div>
+    </section>
+
+    <!-- ===== Resumo por categoria ===== -->
+    <section class="painel" aria-labelledby="t-cat">
+      <h2 id="t-cat">Resumo por categoria</h2>
+      <div class="tabela-wrap" id="tabela-categorias"></div>
+    </section>
+
+    <!-- ===== Sugestão de compra ===== -->
+    <section class="painel" aria-labelledby="t-sug">
+      <h2 id="t-sug">Sugestão de compra</h2>
+      <p class="subtitulo">Lista o que falta para cada produto ativo chegar ao estoque ideal, com o custo estimado de compra.</p>
+      <form id="form-sugestao" class="filtros" novalidate>
+        <div class="campo">
+          <label for="s-ideal">Estoque ideal (unidades)</label>
+          <input id="s-ideal" type="number" min="1" max="100000" step="1" inputmode="numeric" value="50">
+        </div>
+        <div class="campo">
+          <button type="submit" class="btn" id="btn-calcular">Calcular sugestão</button>
+        </div>
+        <div class="campo">
+          <button type="button" class="btn btn-claro" id="btn-csv" disabled>Exportar CSV</button>
+        </div>
+      </form>
+      <div id="erro-sugestao" class="msg msg-erro" role="alert" hidden></div>
+      <p id="resumo-sugestao" class="resumo-lista" role="status" aria-live="polite"></p>
+      <div class="tabela-wrap" id="tabela-sugestao"></div>
+    </section>
+  </main>
+
+  <footer class="rodape">ERP Ferkautoparts · PIM IV · 2026</footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/estoque.js"></script>
+</body>
+</html>
