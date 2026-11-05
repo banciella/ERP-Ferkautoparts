@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Movimentações · ERP Ferkautoparts</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/cadastros.css">
+</head>
+<body>
+  <noscript><p class="msg msg-erro">Este sistema precisa de JavaScript ativado para funcionar.</p></noscript>
+
+  <main id="conteudo">
+    <h1>Movimentações de estoque</h1>
+    <p class="subtitulo">Registre entradas e saídas de peças. O saldo é calculado automaticamente pelo banco de dados.</p>
+
+    <div id="aviso-ok" class="msg msg-ok" role="status" aria-live="polite" hidden></div>
+    <div id="aviso-erro" class="msg msg-erro" role="alert" hidden></div>
+
+    <section class="painel" aria-labelledby="t-registrar">
+      <h2 id="t-registrar">Registrar movimentação</h2>
+      <form id="form-mov" class="form-mov" novalidate>
+        <div class="campo largo">
+          <label for="m-produto">Produto <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <select id="m-produto" required><option value="">Carregando...</option></select>
+        </div>
+
+        <p id="info-produto" class="info-produto largo" aria-live="polite" hidden></p>
+
+        <fieldset class="campo" style="border:0;padding:0;margin:0 0 1rem;">
+          <legend style="font-weight:600;margin-bottom:.3rem;color:inherit;padding:0">Tipo <span class="obrigatorio" aria-hidden="true">*</span></legend>
+          <div class="tipo-opcoes">
+            <label><input type="radio" name="tipo" value="ENTRADA" checked> Entrada</label>
+            <label><input type="radio" name="tipo" value="SAIDA"> Saída</label>
+          </div>
+        </fieldset>
+
+        <div class="campo">
+          <label for="m-qtd">Quantidade <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input id="m-qtd" type="number" min="1" step="1" inputmode="numeric" required>
+        </div>
+
+        <div class="campo largo">
+          <label for="m-motivo">Motivo (opcional)</label>
+          <input id="m-motivo" maxlength="200" placeholder="Ex.: compra de fornecedor, venda balcão, troca em garantia">
+        </div>
+
+        <div class="largo">
+          <button type="submit" class="btn btn-verde" id="btn-registrar">Registrar movimentação</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="painel" aria-labelledby="t-hist">
+      <h2 id="t-hist">Histórico</h2>
+      <form id="form-filtros" class="filtros" novalidate>
+        <div class="campo">
+          <label for="h-produto">Produto</label>
+          <select id="h-produto"><option value="">Todos</option></select>
+        </div>
+        <div class="campo">
+          <label for="h-tipo">Tipo</label>
+          <select id="h-tipo">
+            <option value="">Entradas e saídas</option>
+            <option value="ENTRADA">Só entradas</option>
+            <option value="SAIDA">Só saídas</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="h-limite">Quantidade de registros</label>
+          <select id="h-limite">
+            <option value="25">Últimos 25</option>
+            <option value="50" selected>Últimos 50</option>
+            <option value="100">Últimos 100</option>
+            <option value="200">Últimos 200</option>
+          </select>
+        </div>
+      </form>
+      <p id="resumo" class="resumo-lista" role="status" aria-live="polite">Carregando...</p>
+      <div class="tabela-wrap" id="tabela-area"></div>
+    </section>
+  </main>
+
+  <footer class="rodape">ERP Ferkautoparts · PIM IV · 2026</footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/movimentacoes.js"></script>
+</body>
+</html>
