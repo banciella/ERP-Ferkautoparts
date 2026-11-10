@@ -1,0 +1,28 @@
+name: CI - ERP Ferkautoparts
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restaurar dependencias
+        run: dotnet restore api/Ferkautoparts.Api.csproj
+
+      - name: Compilar
+        run: dotnet build api/Ferkautoparts.Api.csproj -c Release --no-restore
+
+      - name: Validar imagem Docker
+        run: docker build -f api/Dockerfile -t erp-ferkautoparts api
